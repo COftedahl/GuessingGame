@@ -38,7 +38,6 @@ public class SampleGuessingGame
             succeeded = false;
             guesses = new int[ALLOWED_GUESSES];
             numToGuess = (int)((Math.random() * RANGE) + BOTTOM);
-            out.println(numToGuess);
             out.println("Welcome to the Guessing Game! You must guess a randomly selected " + 
                 "whole number between " + BOTTOM + " and " + TOP + " in " + ALLOWED_GUESSES + " guesses! Good Luck!");
             while ((succeeded == false) && (numGuessesUsed < ALLOWED_GUESSES))
