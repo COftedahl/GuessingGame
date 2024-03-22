@@ -1,8 +1,14 @@
 import java.io.*;
 
 
-public class TestGuessingGame extends SampleGuessingGame
+public class TestGuessingGame extends SampleGuessingGameReworked
 {
+    public static void mains(String[] args) {
+        SampleGuessingGameReworked.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
+    }
+    public static void main(String[] args) {
+        SampleGuessingGameReworked.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD));
+    }
     public static void test(int n)
     {
         String input = "";
@@ -48,7 +54,7 @@ public class TestGuessingGame extends SampleGuessingGame
         }
         else
         {
-            runGame(inStream, outStream);
+            runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
         }
     }
 }
