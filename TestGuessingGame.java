@@ -1,8 +1,4 @@
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.PrintStream;
-import java.io.FileOutputStream;
-import java.io.File;
+import java.io.*;
 
 
 public class TestGuessingGame extends SampleGuessingGame
@@ -54,10 +50,5 @@ public class TestGuessingGame extends SampleGuessingGame
         {
             runGame(inStream, outStream);
         }
-        
-        
-        
-        
-        
     }
 }
