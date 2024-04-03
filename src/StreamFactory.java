@@ -1,9 +1,12 @@
+package src;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 
 public class StreamFactory {
-    public static  enum StreamType {
+    public static enum StreamType {
         STANDARD,
+        COMPUTER,
         CUSTOM;
     }
     private StreamFactory(){}
@@ -15,6 +18,9 @@ public class StreamFactory {
         else {
             if (inType == StreamType.STANDARD) {
                 return new GenericStreamManager(System.in, System.out);
+            }
+            else if (inType == StreamType.COMPUTER) {
+                return new ComputerStreamManager();
             }
             else {
                 return new CustomStreamManager();

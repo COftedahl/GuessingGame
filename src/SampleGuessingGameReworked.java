@@ -1,6 +1,5 @@
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Scanner;
+package src;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,15 +9,17 @@ public class SampleGuessingGameReworked
     protected static final int BOTTOM = 1;
     protected static final int TOP = 100;
     protected static final int RANGE = TOP - BOTTOM + 1;
-    public static void main(String[] args)
-    {
-        runGame();
+    protected boolean askingToPlayAgain = false;
+    protected boolean wonGame = false;
+    public static void main(String[] args) {
+        SampleGuessingGameReworked game = new SampleGuessingGameReworked();
+        game.runGame();
     }
-    public static void runGame()
+    public void runGame()
     {
         runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD));
     }
-    public static void runGame(AbstractStreamManager streamMan)
+    public void runGame(AbstractStreamManager streamMan)
     {
         boolean continuePlaying = true;
         boolean succeeded = false;
@@ -103,10 +104,14 @@ public class SampleGuessingGameReworked
                 }
                 
             }
+            wonGame = succeeded;
             streamMan.print("Do you want to play again? \n>>  ");
+            askingToPlayAgain = true;
             temp = streamMan.read();
             pattern = Pattern.compile("y(es)?.?", Pattern.CASE_INSENSITIVE);
             matcher = pattern.matcher(temp);
+            askingToPlayAgain = false;
+            wonGame = false;
             if (matcher.find())
             {
                 continuePlaying = true;

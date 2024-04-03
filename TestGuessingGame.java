@@ -1,16 +1,22 @@
+import src.SampleGuessingGameReworked;
+import src.StreamFactory;
+
 import java.io.*;
 
 
 public class TestGuessingGame extends SampleGuessingGameReworked
 {
     public static void mains(String[] args) {
-        SampleGuessingGameReworked.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
+        SampleGuessingGameReworked game = new SampleGuessingGameReworked();
+        game.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
     }
     public static void main(String[] args) {
-        SampleGuessingGameReworked.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD));
+        SampleGuessingGameReworked game = new SampleGuessingGameReworked();
+        game.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD));
     }
     public static void test(int n)
     {
+        SampleGuessingGameReworked game = new SampleGuessingGameReworked();
         String input = "";
         String outputFilePath = "C:\\Users\\coley\\OneDrive\\Desktop\\testGuessingGameOutput.txt";
         int temp = (int)((Math.random() * RANGE) + BOTTOM);
@@ -54,7 +60,7 @@ public class TestGuessingGame extends SampleGuessingGameReworked
         }
         else
         {
-            runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
+            game.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
         }
     }
 }
