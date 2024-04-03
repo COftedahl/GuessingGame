@@ -5,63 +5,49 @@ public class TestIntelligentComputerPlay extends SampleGuessingGameReworked {
         ComputerStreamManager manager = (ComputerStreamManager) StreamFactory.getStreamManager(StreamFactory.StreamType.COMPUTER, StreamFactory.StreamType.COMPUTER);
         RunnableGuessingGame game = new RunnableGuessingGame(manager);
         synchronized (manager) {
+
             Thread thread = new Thread(game);
-            //Thread inputResponder = new Thread(new RespondToInput(game, manager));
-            //inputResponder.start();
             thread.start();
+
             while (game.askingToPlayAgain == false) {
                 synchronized (manager) {
                     try {
                         manager.wait();
-                        int num = (int) (Math.random() * game.RANGE  + game.BOTTOM);
-                        manager.writeBuffer("" + num);
-                        System.out.println("wroteToBuffer");
-                    }
-                    catch (Exception e) {
-                        System.out.println("Error");
+                        if (game.askingToPlayAgain == false) {
+                            manager.writeBuffer((generateRandomNumber(game.BOTTOM, game.TOP)));
+                        }
+                        else {
+                            manager.writeBuffer("No");
+                        }
+                    } catch (InterruptedException e) {
+
                     }
                 }
             }
             try {
-                java.lang.Thread.sleep(2000);
-                thread.join();
-                //inputResponder.join();
+                thread.join(200);
             }
             catch (Exception e) {
 
             }
         }
     }
-    private static class RespondToInput implements Runnable {
-        private RunnableGuessingGame game;
-        ComputerStreamManager manager;
-        protected RespondToInput(RunnableGuessingGame g, ComputerStreamManager c) {
-            game = g;
-            manager = c;
-        }
-        @Override
-        public void run() {
-            synchronized(manager) {
-                while (game.askingToPlayAgain == false) {
-                    try {
-                        manager.wait();
-                        if (game.askingToPlayAgain == false) {
-                            //generate number, notify streamManager
-                            int num = (int) (Math.random() * game.RANGE - game.BOTTOM);
-                            manager.writeBuffer("" + num);
-                            manager.notifyBuffer();
-                        } else {
-                            //end game, record results
-                            System.out.println("Won game? " + game.wonGame);
-                            manager.writeBuffer("no");
-                            manager.notifyBuffer();
-                        }
-                    } catch (Exception e) {
-                        System.out.println(e.getStackTrace());
-                    }
-                }
-            }
-            System.out.println("Exiting InputResponder");
-        }
+
+    private static String generateRandomNumber(int bottom, int top) {
+        return ("" + (int)(Math.random() * (top - bottom + 1) + bottom));
     }
 }
+/*try {
+                        //manager.lock.lock();
+                        synchronized(manager.buffer) {
+                            manager.wait();
+                            int num = (int) (Math.random() * game.RANGE + game.BOTTOM);
+                            manager.writeBuffer("" + num);
+                            System.out.println("wroteToBuffer");
+                            manager.buffer.notify();
+                        }
+                        //manager.lock.unlock();
+                    }
+                    catch (Exception e) {
+                        System.out.println("Error");
+                    }*/

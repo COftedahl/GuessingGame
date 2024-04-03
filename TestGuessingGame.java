@@ -6,11 +6,11 @@ import java.io.*;
 
 public class TestGuessingGame extends SampleGuessingGameReworked
 {
-    public static void mains(String[] args) {
+    public static void main(String[] args) {
         SampleGuessingGameReworked game = new SampleGuessingGameReworked();
         game.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.CUSTOM, StreamFactory.StreamType.CUSTOM));
     }
-    public static void main(String[] args) {
+    public static void mains(String[] args) {
         SampleGuessingGameReworked game = new SampleGuessingGameReworked();
         game.runGame(StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD));
     }

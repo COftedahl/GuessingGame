@@ -1,26 +1,27 @@
 package src;
 
 public class ComputerStreamManager extends AbstractStreamManager{
-    private String buffer = "";
+    protected String buffer = "";
 
-    public void writeBuffer(String s) {  buffer = s;  }
-    public void notifyBuffer() {
-        synchronized (buffer) {
-            buffer.notify();
+    public void writeBuffer(String s) {
+        buffer = s;
+        synchronized (this) {
+            this.notify();
         }
     }
     @Override
     public String read() {
         synchronized(this) {
-            notify();
             try {
-                wait(200);
+                notify();
+                wait();
+                return buffer;
             }
             catch (Exception e) {
 
             }
-            return (buffer.length()>0?buffer:"1");
         }
+        return "-1";
     }
 
     @Override

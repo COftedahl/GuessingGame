@@ -121,6 +121,7 @@ public class RunnableGuessingGame implements Runnable
                 continuePlaying = false;
                 try {
                     streamMan.close();
+                    System.out.println("Closing");
                 }
                 catch (Exception e) {
                     streamMan.print("failed to close streams");
