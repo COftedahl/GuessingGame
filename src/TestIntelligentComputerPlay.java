@@ -1,9 +1,12 @@
 package src;
 
-public class TestIntelligentComputerPlay extends SampleGuessingGameReworked {
-    public static void main(String[] args) {
+
+public class TestIntelligentComputerPlay extends SampleGuessingGameReworked implements Game{
+    public GameResultsImpl gamePlay(NeuralNetwork network) {
         ComputerStreamManager manager = (ComputerStreamManager) StreamFactory.getStreamManager(StreamFactory.StreamType.COMPUTER, StreamFactory.StreamType.COMPUTER);
         RunnableGuessingGame game = new RunnableGuessingGame(manager);
+        GameResultsImpl results = new GameResultsImpl();
+        double[] inputs = {1,100};
         synchronized (manager) {
 
             Thread thread = new Thread(game);
@@ -13,8 +16,18 @@ public class TestIntelligentComputerPlay extends SampleGuessingGameReworked {
                 synchronized (manager) {
                     try {
                         manager.wait();
+                        results = game.getResults();
                         if (game.askingToPlayAgain == false) {
-                            manager.writeBuffer((generateRandomNumber(game.BOTTOM, game.TOP)));
+                            if ((results.moves.size() > 0) &&
+                                (results.moves.get(results.moves.size() - 1) != null)) {
+                                if (results.moves.get(results.moves.size() - 1).getResult() == GameResultsImpl.Result.HIGHER) {
+                                    inputs[0] = results.moves.get(results.moves.size() - 1).getGuess();
+                                }
+                                else if (results.moves.get(results.moves.size() - 1).getResult() == GameResultsImpl.Result.LOWER) {
+                                    inputs[1] = results.moves.get(results.moves.size() - 1).getGuess();
+                                }
+                            }
+                            manager.writeBuffer("" + network.compute(inputs, 1, 100));
                         }
                         else {
                             manager.writeBuffer("No");
@@ -26,23 +39,14 @@ public class TestIntelligentComputerPlay extends SampleGuessingGameReworked {
             }
 
         }
+        return results;
     }
 
     private static String generateRandomNumber(int bottom, int top) {
         return ("" + (int)(Math.random() * (top - bottom + 1) + bottom));
     }
+
+    public GameResultsImpl play(NeuralNetwork n) {
+        return gamePlay(n);
+    }
 }
-/*try {
-                        //manager.lock.lock();
-                        synchronized(manager.buffer) {
-                            manager.wait();
-                            int num = (int) (Math.random() * game.RANGE + game.BOTTOM);
-                            manager.writeBuffer("" + num);
-                            System.out.println("wroteToBuffer");
-                            manager.buffer.notify();
-                        }
-                        //manager.lock.unlock();
-                    }
-                    catch (Exception e) {
-                        System.out.println("Error");
-                    }*/

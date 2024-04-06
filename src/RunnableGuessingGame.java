@@ -13,6 +13,7 @@ public class RunnableGuessingGame implements Runnable
     protected boolean askingToPlayAgain = false;
     protected boolean wonGame = false;
     protected AbstractStreamManager streamMan = null;
+    protected GameResultsImpl results = new GameResultsImpl();
     public RunnableGuessingGame() {
         streamMan = StreamFactory.getStreamManager(StreamFactory.StreamType.STANDARD, StreamFactory.StreamType.STANDARD);
     }
@@ -80,13 +81,16 @@ public class RunnableGuessingGame implements Runnable
                 }
                 guesses[numGuessesUsed] = currGuess;
                 numGuessesUsed += 1;
+                GameMoves move = new GameMoves(currGuess, GameResultsImpl.Result.CORRECT);
                 if (currGuess > numToGuess)
                 {
                     streamMan.println("Wrong - Your guess, " + currGuess + ", was too high. ");
+                    move.setResult(GameResultsImpl.Result.LOWER);
                 }
                 else if (currGuess < numToGuess)
                 {
                     streamMan.println("Wrong - Your guess, " + currGuess + ", was too low. ");
+                    move.setResult(GameResultsImpl.Result.HIGHER);
                 }
                 else
                 {
@@ -102,10 +106,14 @@ public class RunnableGuessingGame implements Runnable
                 {
                     streamMan.println("The answer was " + numToGuess + ". ");
                 }
+                results.moves.add(move);
                 
             }
             wonGame = succeeded;
             streamMan.print("Do you want to play again? \n>>  ");
+            results.numMovesUsed = numGuessesUsed;
+            results.wonGame = wonGame;
+
             askingToPlayAgain = true;
             temp = streamMan.read();
             pattern = Pattern.compile("y(es)?.?", Pattern.CASE_INSENSITIVE);
@@ -131,7 +139,9 @@ public class RunnableGuessingGame implements Runnable
         }
     }
 
-    @Override
+    public GameResultsImpl getResults() {
+        return results;
+    }
     public void run() {
         runGame();
     }

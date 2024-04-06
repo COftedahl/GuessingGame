@@ -2,8 +2,8 @@ package src;
 
 public class GameMoves {
     private int guess;
-    private GameResults.Result result;
-    public GameMoves(int g, GameResults.Result r) {
+    private GameResultsImpl.Result result;
+    public GameMoves(int g, GameResultsImpl.Result r) {
         guess = g;
         result = r;
     }
@@ -15,11 +15,11 @@ public class GameMoves {
         this.guess = guess;
     }
 
-    public GameResults.Result getResult() {
+    public GameResultsImpl.Result getResult() {
         return result;
     }
 
-    public void setResult(GameResults.Result result) {
+    public void setResult(GameResultsImpl.Result result) {
         this.result = result;
     }
 }
