@@ -24,12 +24,7 @@ public class TestIntelligentComputerPlay extends SampleGuessingGameReworked {
                     }
                 }
             }
-            try {
-                thread.join(200);
-            }
-            catch (Exception e) {
 
-            }
         }
     }
 
